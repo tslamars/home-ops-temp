@@ -1,0 +1,22 @@
+machine:
+  network:
+    hostname: talos-marsmaster-03
+    interfaces:
+      - deviceSelector:
+          hardwareAddr: 84:47:09:47:3c:a2
+        addresses:
+          - 10.10.5.173/21
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 10.10.0.1
+        mtu: 1500
+        dhcp: false
+        vip:
+          ip: 10.10.5.200
+    nameservers:
+      - 1.1.1.1
+      - 1.0.0.1
+    disableSearchDomain: true
+  install:
+    disk: /dev/nvme1n1
+    image: factory.talos.dev/installer/e048aaf4461ff9f9576c9a42f760f2fef566559bd4933f322853ac291e46f238:{{ ENV.TALOS_VERSION }}

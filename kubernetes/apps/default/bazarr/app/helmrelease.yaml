@@ -107,7 +107,7 @@ spec:
       media:
         type: nfs
         server: 10.69.70.30
-        path: /mnt/data/media
+        path: /mnt/user/media
         globalMounts:
           - path: /media
       scripts:

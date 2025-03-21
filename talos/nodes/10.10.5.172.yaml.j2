@@ -1,22 +1,23 @@
+---
 machine:
-  network:
-    hostname: talos-marsmastertest-02
-    interfaces:
-      - deviceSelector:
-          hardwareAddr: ba:1d:43:c3:19:43
-        addresses:
-          - 10.10.5.172/21
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 10.10.0.1
-        mtu: 1500
-        dhcp: false
-        vip:
-          ip: 10.10.5.200
-    nameservers:
-      - 1.1.1.1
-      - 1.0.0.1
-    disableSearchDomain: true
+  disks:
+    - device: /dev/disk/by-id/nvme-SAMSUNG_MZ1L21T9HCLS-00A07_S666NN0X221313
+      partitions: [{ mountpoint: /var/mnt/extra }]
   install:
-    disk: /dev/sda
-    image: factory.talos.dev/installer/dc7b152cb3ea99b821fcb7340ce7168313ce393d663740b791c36f6e95fc8586:{{ ENV.TALOS_VERSION }}
+    diskSelector:
+      serial: S666NN0W401713
+  network:
+    hostname: k8s-tslamarsmaster-02
+    interfaces:
+      - # m0
+        deviceSelector: { busPath: 0-1.0 }
+        dhcp: false
+        mtu: 65520
+        addresses: [169.254.255.12/32]
+        routes: [{ network: 169.254.255.10/32, metric: 2048 }]
+      - # m1
+        deviceSelector: { busPath: 1-1.0 }
+        dhcp: false
+        mtu: 65520
+        addresses: [169.254.255.12/32]
+        routes: [{ network: 169.254.255.11/32, metric: 2048 }]

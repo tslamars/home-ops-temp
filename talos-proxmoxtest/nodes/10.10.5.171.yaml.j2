@@ -1,11 +1,11 @@
 machine:
   network:
-    hostname: talos-marsmaster-02
+    hostname: talos-marsmastertest-01
     interfaces:
       - deviceSelector:
-          hardwareAddr: 6c:4b:90:4f:bd:44
+          hardwareAddr: a6:77:42:7e:0c:84
         addresses:
-          - 10.10.5.172/21
+          - 10.10.5.171/21
         routes:
           - network: 0.0.0.0/0
             gateway: 10.10.0.1
@@ -18,5 +18,5 @@ machine:
       - 1.0.0.1
     disableSearchDomain: true
   install:
-    disk: /dev/sdb
-    image: factory.talos.dev/installer/e048aaf4461ff9f9576c9a42f760f2fef566559bd4933f322853ac291e46f238:{{ ENV.TALOS_VERSION }}
+    disk: /dev/sda
+    image: factory.talos.dev/installer/dc7b152cb3ea99b821fcb7340ce7168313ce393d663740b791c36f6e95fc8586:{{ ENV.TALOS_VERSION }}

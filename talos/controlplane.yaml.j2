@@ -25,7 +25,7 @@ machine:
     interfaces:
       - interface: bond0
         bond:
-          deviceSelectors: [{ hardwareAddr: "58:47:ca:77:*", driver: i40e }]
+          deviceSelectors: [{ hardwareAddr: "58:47:ca:7b:*", driver: igc }]
           mode: 802.3ad
           xmitHashPolicy: layer3+4
           lacpRate: fast

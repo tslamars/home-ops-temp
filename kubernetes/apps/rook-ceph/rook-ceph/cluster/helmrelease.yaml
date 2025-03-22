@@ -77,7 +77,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: /dev/disk/by-id/nvme-Micron_7450_MTFDKBA800TFS_.*
+        devicePathFilter: nvme0n1
         config:
           osdsPerDevice: "1"
     cephBlockPools:

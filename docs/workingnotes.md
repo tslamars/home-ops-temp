@@ -55,6 +55,13 @@ export ROOK_DISK=CT1000P3PSSD8
 eval ($op signin)
 ```
 
+## Talos stuffs
+```
+talosctl -n 10.10.5.170 ls -l /dev/disk/by-id/
+```
+
+
+
 - Debug task failure
 ```bash
 minijinja-cli talos/controlplane.yaml.j2 | op inject

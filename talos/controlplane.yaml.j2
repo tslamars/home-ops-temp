@@ -19,7 +19,7 @@ machine:
         options: ["bind", "rshared", "rw"]
     defaultRuntimeSeccompProfileEnabled: true
     nodeIP:
-      validSubnets: ["10.10.5.0/24"]
+      validSubnets: ["10.10.5.0/21"]
     disableManifestsDirectory: true
   network:
     nameservers:
@@ -180,5 +180,5 @@ cluster:
       key: op://kubernetes/talos/CLUSTER_ETCD_CA_KEY
     extraArgs:
       listen-metrics-urls: http://0.0.0.0:2381
-    advertisedSubnets: ["10.10.5.0/24"]
+    advertisedSubnets: ["10.10.5.0/21"]
   allowSchedulingOnControlPlanes: true

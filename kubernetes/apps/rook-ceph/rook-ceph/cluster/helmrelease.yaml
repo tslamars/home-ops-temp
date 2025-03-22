@@ -77,7 +77,7 @@ spec:
       storage:
         useAllNodes: true
         useAllDevices: false
-        devicePathFilter: nvme0n1
+        deviceFilter: nvme1n1
         config:
           osdsPerDevice: "1"
     cephBlockPools:

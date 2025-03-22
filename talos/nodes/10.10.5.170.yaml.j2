@@ -9,8 +9,9 @@ machine:
   network:
     hostname: k8s-tslamarsmaster-00
     interfaces:
-      - deviceSelector:
-          hardwareAddr: 58:47:ca:7b:f3:cc
+      - interface: enp87s0
+        deviceSelector:
+          hardwareAddr: "58:47:ca:7b:f3:cc"
           driver: igc
         mtu: 1500
         dhcp: true

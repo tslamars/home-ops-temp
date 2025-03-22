@@ -41,7 +41,8 @@ function apply_talos_config() {
 
             log info "Talos node configuration rendered successfully" "node=${node}"
 
-            if ! output=$(echo "${machine_config}" | talosctl --nodes "${node}" apply-config --insecure --file /dev/stdin 2>&1); then
+            if ! output=$(echo "${machine_config}" | talosctl --nodes "${node}" apply-config --insecure --file /dev/stdin 2>&1);
+            then
                 if [[ "${output}" == *"certificate required"* ]]; then
                     log warn "Talos node is already configured, skipping apply of config" "node=${node}"
                     continue
@@ -58,8 +59,7 @@ function apply_talos_config() {
 function bootstrap_talos() {
     log debug "Bootstrapping Talos"
 
-    local max_retries=10  # Increased retries for debugging
-    local retry_count=0
+    local bootstrapped=true
 
     if ! controller=$(talosctl config info --output json | jq --exit-status --raw-output '.endpoints[]' | shuf -n 1) || [[ -z "${controller}" ]]; then
         log error "No Talos controller found"
@@ -67,29 +67,17 @@ function bootstrap_talos() {
 
     log debug "Talos controller discovered" "controller=${controller}"
 
-    # Keep retrying until we succeed or hit max retries, logging detailed output
-    while [[ $retry_count -lt $max_retries ]]; do
-        # Run bootstrap and capture output
-        if output=$(talosctl --nodes "${controller}" bootstrap 2>&1); then
-            log info "Talos bootstrapped successfully" "controller=${controller}"
+    until output=$(talosctl --nodes "${controller}" bootstrap 2>&1); do
+        if [[ "${bootstrapped}" == true && "${output}" == *"AlreadyExists"* ]]; then
+            log info "Talos is bootstrapped" "controller=${controller}"
             break
-        else
-            # Log the full error output
-            log warn "Talos bootstrap failed" "controller=${controller}" "attempt=$((retry_count + 1))/$max_retries" "output=${output}"
-            retry_count=$((retry_count + 1))
-
-            # Check if output indicates a timeout explicitly
-            if [[ "${output}" == *"timeout"* || "${output}" == *"deadline exceeded"* ]]; then
-                log warn "Bootstrap appears to be timing out" "controller=${controller}"
-            fi
-
-            if [[ $retry_count -lt $max_retries ]]; then
-                log info "Retrying bootstrap in 10 seconds..." "controller=${controller}"
-                sleep 10
-            else
-                log error "Failed to bootstrap Talos after $max_retries attempts" "controller=${controller}" "final_output=${output}"
-            fi
         fi
+
+        # Set bootstrapped to false after the first attempt
+        bootstrapped=false
+
+        log info "Talos bootstrap failed, retrying in 10 seconds..." "controller=${controller}"
+        sleep 10
     done
 }
 
